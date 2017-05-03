@@ -5,6 +5,8 @@ marine charting
 
 
 
+
+
 # -*- coding: utf-8 -*-
 """
 Created on Wed Apr 05 22:10:20 2017
@@ -165,20 +167,21 @@ B=len(CAA)
 print "第一阶段完成"
 YShift=[0]*(len(Y)-1)
 Depth=[0]*(len(Y)-1)
+X0=[0]*(len(Y)-1)
 Y0=[0]*(len(Y)-1)
 #X,Y基础数据都是3位
 
 for e in range(0,len(Y)-1):
     YShift[e],Depth[e]=RayTracingg0(DAA,CAA,Theta[e+1],S[e+1])
-    Y0[e]=round(YShift[e]+string.atof(Y[e+1]),9)
 #计算在船体坐标系下的坐标，得到（X1,Y1）
-
 print "done"
 X1=[0]*len(Y0)
 Y1=[0]*len(Y0)
 H1=[0]*len(Y0)
 for r in range(0,len(Y0)):
-    X1[r],Y1[r]=Convert(Rad[r+1],X[r+1],Y0[r])
+    X0[r],Y0[r]=Convert(Rad[r+1],0,YShift[r])
+    X1[r]=X[r+1]+X0[r]
+    Y1[r]=Y[r+1]+Y0[r]
     H1[r]=H[r+1]-Depth[r]
 #根据读取的船体坐标，转换坐标为大地坐标系(X1,Y1,H1)
 fileoutput = open('output.txt','w')
@@ -198,6 +201,14 @@ fig = plt.figure(1)
 ax = fig.gca(projection='3d')
 ax.plot_trisurf(X1,Y1,H1, cmap=cm.jet, linewidth=0.01)
 plt.show()
+
+
+
+
+
+
+
+
 
 
 
